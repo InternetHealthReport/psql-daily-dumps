@@ -1,4 +1,4 @@
-# psql-daily-dumps
+# psql-dump
 Script for creating daily dumps of the database
 
 Should be run from the host running the postgresql database:
