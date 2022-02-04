@@ -18,7 +18,7 @@ class Dumper():
                             datefmt='%Y-%m-%d %H:%M:%S',
                             level=logging.WARN)
 
-    def fname(self, date):
+    def fname(self, startdate):
         """Construct the folder and filename for the given date and config file"""
 
         dump_folder = f"{self.config['dump_root']}/{startdate.year:04d}/{startdate.month:02d}/{startdate.day:02d}/"
@@ -32,7 +32,7 @@ class Dumper():
         enddate = date.shift(days=1)
 
         query = self.config['query'].format(startdate=startdate, enddate=enddate)
-        dump_folder, dump_fname = self.fname(date)
+        dump_folder, dump_fname = self.fname(startdate)
 
         # create directories if needed
         os.makedirs(dump_folder, exist_ok=True) 
@@ -67,6 +67,12 @@ if __name__ == "__main__":
             help='file containing a list of dates to dump (one date per line)')
     parser.add_argument('--date', default='', type=str, 
             help='date to dump (e.g. 2022-01-20)')
+    parser.add_argument('--startdate', default='', type=str, 
+            help='start date for a range of dates. Should also specify enddate')
+    parser.add_argument('--enddate', default='', type=str, 
+            help='end date for a range of dates. Should also specify startdate')
+    parser.add_argument('--frequency', default='day', type=str, 
+            help='frequency for a range of dates (default: day)')
 
     args = parser.parse_args()
 
@@ -76,6 +82,11 @@ if __name__ == "__main__":
         with open(args.dates, 'r') as fp:
             for date in fp.readlines():
                 dates.append(arrow.get(date))
+    elif args.startdate and args.enddate and args.frequency:
+        start = arrow.get(args.startdate)
+        end = arrow.get(args.enddate)
+        for date in arrow.Arrow.range(args.frequency, start, end):
+            dates.append(date)
     elif args.date:
         dates.append(arrow.get(args.date))
     else:

@@ -1,0 +1,7 @@
+{
+    "log": "log/rov.log",
+    "database": "ihr",
+    "query": "select * from ihr_hegemony_prefix where  timebin>='{startdate.year}-{startdate.month}-{startdate.day}' and timebin<'{enddate.year}-{enddate.month}-{enddate.day}'",
+    "dump_root": "dumps/ihr/rov/",
+    "dump_fname": "ihr_rov"
+}
