@@ -1,7 +1,0 @@
-{
-    "log": "log/ashegemony_v4_local.log",
-    "database": "ihr",
-    "query": "select timebin, originasn_id as originasn, asn_id as asn, hege from ihr_hegemony where originasn_id!=0 and af=4 and timebin>='{startdate.year}-{startdate.month}-{startdate.day}' and timebin<'{enddate.year}-{enddate.month}-{enddate.day}'",
-    "dump_root": "dumps/ihr/hegemony/ipv4/local/",
-    "dump_fname": "ihr_hegemony_ipv4_local"
-}
