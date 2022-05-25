@@ -43,6 +43,11 @@ class Dumper():
             fname=dump_folder+dump_fname
             )
 
+        # Check if dump already exists
+        if os.path.exists(dump_folder+dump_fname+'.lz4'):
+            logging.error(f'{dump_folder}{dump_fname}.lz4 already exists')
+            return
+
         logging.debug(f'Dumping data to csv file ({cmd})...')
         ret_value = os.system( cmd )
         if ret_value != 0:
@@ -81,7 +86,7 @@ if __name__ == "__main__":
     if args.dates:
         with open(args.dates, 'r') as fp:
             for date in fp.readlines():
-                dates.append(arrow.get(date))
+                dates.append(arrow.get(date.strip()))
     elif args.startdate and args.enddate and args.frequency:
         start = arrow.get(args.startdate)
         end = arrow.get(args.enddate)
