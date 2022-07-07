@@ -34,6 +34,12 @@ class Dumper():
         query = self.config['query'].format(startdate=startdate, enddate=enddate)
         dump_folder, dump_fname = self.fname(startdate)
 
+        # Check if dump already exists
+        if(os.path.exists(dump_folder+dump_fname+'.lz4')
+            and os.path.getsize(dump_folder+dump_fname+'.lz4') > 1000):
+            logging.error(f'{dump_folder}{dump_fname}.lz4 already exists')
+            return
+
         # create directories if needed
         os.makedirs(dump_folder, exist_ok=True) 
 
@@ -43,18 +49,13 @@ class Dumper():
             fname=dump_folder+dump_fname
             )
 
-        # Check if dump already exists
-        if os.path.exists(dump_folder+dump_fname+'.lz4'):
-            logging.error(f'{dump_folder}{dump_fname}.lz4 already exists')
-            return
-
         logging.debug(f'Dumping data to csv file ({cmd})...')
         ret_value = os.system( cmd )
         if ret_value != 0:
             logging.error(f'Could not dump data? Returned value: {ret_value}')
         
         if compress:
-            cmd = f'{compress} {dump_folder}{dump_fname} {dump_folder}{dump_fname}.{compress}'
+            cmd = f'{compress} -f {dump_folder}{dump_fname} {dump_folder}{dump_fname}.{compress}'
             logging.debug(f'Compressing data ({cmd})...')
             ret_value = os.system( cmd )
             os.remove(dump_folder+dump_fname)
