@@ -1,0 +1,7 @@
+{
+    "log": "log/tr_hegemony.log",
+    "database": "ihr",
+    "query": "select ihr_tr_hegemony.id, timebin, hege, ihr_tr_hegemony.af, nbsamples, origin.type as origin_type, origin.name as origin_name, dependency.type as dependency_type, dependency.name as dependency_name from ihr_tr_hegemony join ihr_tr_hegemony_identifier as dependency on dependency_id=dependency.id join ihr_tr_hegemony_identifier as origin on origin_id=origin.id where  timebin>='{startdate.year}-{startdate.month}-{startdate.day}' and timebin<'{enddate.year}-{enddate.month}-{enddate.day}'",
+    "dump_root": "dumps/ihr/tr_hegemony/",
+    "dump_fname": "ihr_tr_hegemony"
+}
