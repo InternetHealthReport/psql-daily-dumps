@@ -43,7 +43,7 @@ class Dumper():
         # create directories if needed
         os.makedirs(dump_folder, exist_ok=True) 
 
-        cmd = """psql -d {db} -c "\copy ({query}) to '{fname}' csv header;" """.format(
+        cmd = r"""psql -d {db} -c "\copy ({query}) to '{fname}' csv header;" """.format(
             db=self.config['database'],
             query=query,
             fname=dump_folder+dump_fname
