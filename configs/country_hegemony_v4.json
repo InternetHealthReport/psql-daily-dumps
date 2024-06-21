@@ -1,0 +1,6 @@
+{
+    "database": "ihr",
+    "query": "select timebin, weight, weightscheme, tansitonly, asn_id as asn, country_id as country, hege from ihr_hegemony_country where af=4 and timebin>='{startdate.year}-{startdate.month}-{startdate.day}' and timebin<'{enddate.year}-{enddate.month}-{enddate.day}'",
+    "dump_root": "/dumps/ihr/country_hegemony/ipv4/",
+    "dump_fname": "ihr_country_hegemony_ipv4"
+}
