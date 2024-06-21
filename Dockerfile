@@ -47,5 +47,7 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     lz4 
 
+USER appuser
+
 # Run the application with docker run --rm internethealthreport/psql-dump configs/ASHegemony_v4_global.json
 ENTRYPOINT ["python3", "dumpit.py", "--config"] 
