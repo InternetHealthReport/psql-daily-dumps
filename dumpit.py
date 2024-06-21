@@ -11,13 +11,6 @@ class Dumper():
         with open(config_fname, 'r') as fp:
             self.config = json.load(fp)
 
-        if 'log' in self.config:
-            logging.basicConfig(filename=self.config['log'],
-                            filemode='a',
-                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                            datefmt='%Y-%m-%d %H:%M:%S',
-                            level=logging.WARN)
-
     def fname(self, startdate):
         """Construct the folder and filename for the given date and config file"""
 
@@ -43,8 +36,9 @@ class Dumper():
         # create directories if needed
         os.makedirs(dump_folder, exist_ok=True) 
 
-        cmd = r"""psql -d {db} -c "\copy ({query}) to '{fname}' csv header;" """.format(
+        cmd = r"""psql -d {db} -h {psql_host} -c "\copy ({query}) to '{fname}' csv header;" """.format(
             db=self.config['database'],
+            psql_host=PSQL_HOST,
             query=query,
             fname=dump_folder+dump_fname
             )
@@ -64,6 +58,14 @@ class Dumper():
             logging.error(f'Could not compress data? Returned value: {ret_value}')
 
 if __name__ == "__main__":
+    logging.basicConfig(
+            format='%(asctime)s %(processName)s %(message)s',
+            level=logging.INFO,
+            datefmt='%Y-%m-%d %H:%M:%S',
+            handlers=[logging.StreamHandler()])
+
+    global PSQL_HOST
+    PSQL_HOST = os.environ["PSQL_HOST"]
 
     parser = argparse.ArgumentParser(
             description='Dump data from the database to a CSV file')
