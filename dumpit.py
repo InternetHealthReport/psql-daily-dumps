@@ -36,9 +36,10 @@ class Dumper():
         # create directories if needed
         os.makedirs(dump_folder, exist_ok=True) 
 
-        cmd = r"""psql -d {db} -h {psql_host} -c "\copy ({query}) to '{fname}' csv header;" """.format(
+        cmd = r"""psql -d {db} -h {psql_host} -U {psql_role} -c "\copy ({query}) to '{fname}' csv header;" """.format(
             db=self.config['database'],
             psql_host=PSQL_HOST,
+            psql_role=PSQL_ROLE,
             query=query,
             fname=dump_folder+dump_fname
             )
@@ -66,6 +67,8 @@ if __name__ == "__main__":
 
     global PSQL_HOST
     PSQL_HOST = os.environ["PSQL_HOST"]
+    global PSQL_ROLE
+    PSQL_ROLE = os.environ["PSQL_ROLE"]
 
     parser = argparse.ArgumentParser(
             description='Dump data from the database to a CSV file')

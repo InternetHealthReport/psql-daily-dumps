@@ -4,6 +4,9 @@ services:
       context: .
     volumes:
       - ./dumps:/dumps
+    environment:
+      - PSQL_HOST=ihr-db.iijlab.net
+      - PSQL_ROLE=romain
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
